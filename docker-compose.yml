@@ -1,0 +1,40 @@
+version: "3.4"
+
+services:
+  synapse:
+    image: matrixdotorg/synapse
+    container_name: synapse
+    hostname: matrix.example.com
+    volumes:
+      - ./synapse-data:/data
+      - ./ssl/ca-cert.pem:/etc/ssl/certs/ca-cert.pem
+      - ./ssl/9da13359.0:/etc/ssl/certs/9da13359.0
+    depends_on: 
+      auth:
+        condition: service_started
+
+  auth:
+    image: yadd/lemonldap-ng-dev
+    container_name: auth
+    hostname: auth.example.com
+    volumes:
+      - ./lemon/lmConf-1.json:/var/lib/lemonldap-ng/conf/lmConf-1.json
+      - ./lemon/matrix-vhost.conf:/etc/nginx/sites-enabled/matrix.conf
+      - ./lemon/ssl.conf:/etc/nginx/sites-enabled/0000default.conf
+      - ./fluffychat:/var/www/fluffychat
+      - ./lemon/fluffychat.conf:/etc/nginx/sites-enabled/fluffychat.conf
+      - ./ssl:/etc/nginx/ssl
+      - ./lemon/openid-configuration.json:/etc/lemonldap-ng/openid-configuration.json
+    ports:
+      - 80:80
+      - 443:443
+      - 8008:8008
+      - 8448:8448
+      #- 443:443
+      #- 8448:8448
+    environment:
+      - SSODOMAIN=example.com
+      - PORTAL=https://auth.example.com
+      - LOGLEVEL=debug
+      - LOGGER=stderr
+      - USERLOGGER=stderr
