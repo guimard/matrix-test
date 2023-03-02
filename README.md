@@ -8,6 +8,8 @@ Add the following line to your `/etc/hosts` file:
 127.0.0.1  matrix.example.com auth.example.com fluffychat.example.com
 ```
 
+First use, initialize matrix using [./init.sh](./init.sh) script.
+
 Then:
 * Start the container `docker-compose up`
 * Access to https://matrix.example.com/.well-known/matrix/client and
