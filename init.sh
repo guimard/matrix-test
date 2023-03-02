@@ -2,6 +2,8 @@
 
 set -x
 
+mkdir -p synapse-data
+
 MYUID=`perl -e 'print $<'`
 
 ARGS="--rm -it -v `pwd`/synapse-data:/data -e SYNAPSE_SERVER_NAME=matrix.example.com -e SYNAPSE_REPORT_STATS=no matrixdotorg/synapse:latest"
