@@ -8,11 +8,13 @@ Add the following line to your `/etc/hosts` file:
 127.0.0.1  matrix.example.com auth.example.com fluffychat.example.com
 ```
 
-Start the container `docker-compose up` and use your browser
-to launch [FluffyChat web](https://fluffychat.example.com/web/). You
-can then authenticate using LemonLDAP::NG Demo accounts:
- * dwho
- * rtyler
- * msmith
-
-Password are account names.
+Then:
+* Start the container `docker-compose up`
+* Access to https://matrix.example.com/.well-known/matrix/client and
+  accept certificate (else FluffyChat will fail)
+* Launch [FluffyChat web](https://fluffychat.example.com/web/)
+* You can then authenticate using LemonLDAP::NG Demo accounts
+  _(password=username)_:
+  * dwho
+  * rtyler
+  * msmith
