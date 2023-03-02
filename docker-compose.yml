@@ -24,7 +24,6 @@ services:
       - ./fluffychat:/var/www/fluffychat
       - ./lemon/fluffychat.conf:/etc/nginx/sites-enabled/fluffychat.conf
       - ./ssl:/etc/nginx/ssl
-      - ./lemon/openid-configuration.json:/etc/lemonldap-ng/openid-configuration.json
     ports:
       - 80:80
       - 443:443
