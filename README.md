@@ -3,6 +3,8 @@
 To use it, build Fluffychat web and push the build/web directory into
 `./fluffychat`.
 
+## Initialization
+
 Add the following line to your `/etc/hosts` file:
 ```
 127.0.0.1  matrix.example.com auth.example.com fluffychat.example.com
@@ -14,9 +16,13 @@ Before continuing, **choose the branch you need**:
 * `step-2-llng-in-db`: use PostgreSQL for both LLNG and Synapse
 * `main`: development branch
 
-Then, initialize matrix using [./init.sh](./init.sh) script. You should do this at each branch change.
+Then, initialize matrix using [./init.sh](./init.sh) script.
 
-Then:
+> You should do this at each branch change.
+
+## Run
+
+* Install your Fluffychat web build into `fluffychat/web`
 * Start the container `docker-compose up`
 * Access to https://matrix.example.com/.well-known/matrix/client and
   accept certificate (else FluffyChat will fail)
