@@ -8,7 +8,12 @@ Add the following line to your `/etc/hosts` file:
 127.0.0.1  matrix.example.com auth.example.com fluffychat.example.com
 ```
 
-First use, initialize matrix using [./init.sh](./init.sh) script.
+Before continuing, **choose the branch you need**:
+* `step-0-oidc`: default SQLite database with OIDC configured _(default LLNG accounts)_
+* `step-1-postgresql`: change database to PostgreSQL
+* `main`: development branch
+
+Then, initialize matrix using [./init.sh](./init.sh) script. You should do this at each branch change.
 
 Then:
 * Start the container `docker-compose up`
