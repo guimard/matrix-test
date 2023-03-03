@@ -1,3 +1,4 @@
+backup/
 ssl/ca-key.pem
 synapse-data/
 fluffychat/web/

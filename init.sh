@@ -12,4 +12,4 @@ mkdir -p synapse-data
 
 cp -f synapse-ref/homeserver.yaml synapse-data/
 
-docker run $SYNAPSEARGS generate
+docker run --rm $SYNAPSEARGS generate
