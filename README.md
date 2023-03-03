@@ -16,6 +16,7 @@ Before continuing, **choose the branch you need**:
 * `step-2-llng-in-db`: use PostgreSQL for both LLNG and Synapse
 * `step-3-haproxy`: use haproxy to manage all https servers
 * `step-4-scale`: use 3 auth servers 3 synapse servers
+* `step-5-backup-and-restore`: scripts to backup and restore the system
 * `main`: development branch
 
 Then, initialize matrix using [./init.sh](./init.sh) script.
