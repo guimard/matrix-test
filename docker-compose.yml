@@ -27,7 +27,14 @@ services:
     depends_on: 
       auth:
         condition: service_started
-    scale: 3
+    deploy:
+      mode: replicated
+      replicas: 3
+      endpoint_mode: dnsrr
+      restart_policy:
+        condition: on-failure
+        delay: 5s
+        window: 120s
 
   auth:
     image: yadd/lemonldap-ng-portal
@@ -54,7 +61,9 @@ services:
   manager:
     image: yadd/lemonldap-ng-manager
     environment:
-      - PG_SERVER=db
+      - SSODOMAIN=example.com
+      - PORTAL=https://auth.example.com
+      - PG_SERVER=synapse-db
       - REDIS_SERVER=redis:6379
       - LOGLEVEL=notice
       - LOGGER=stderr
