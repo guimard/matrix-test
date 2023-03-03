@@ -17,6 +17,7 @@ Before continuing, **choose the branch you need**:
 * `step-3-haproxy`: use haproxy to manage all https servers
 * `step-4-scale`: use 3 auth servers 3 synapse servers
 * `step-5-backup-and-restore`: scripts to backup and restore the system
+* `step-6-root-domain-addresses`: able to deliver @example.com addresses
 * `main`: development branch
 
 Then, initialize matrix using [./init.sh](./init.sh) script.
