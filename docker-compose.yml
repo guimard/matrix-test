@@ -14,6 +14,9 @@ services:
     healthcheck:
       test: "exit 0"
 
+  redis:
+    image: redis
+
   synapse:
     image: matrixdotorg/synapse
     container_name: synapse
@@ -36,13 +39,6 @@ services:
       - ./fluffychat:/var/www/fluffychat
       - ./lemon/fluffychat.conf:/etc/nginx/sites-enabled/fluffychat.conf
       - ./ssl:/etc/nginx/ssl
-    ports:
-      - 80:80
-      - 443:443
-      - 8008:8008
-      - 8448:8448
-      #- 443:443
-      #- 8448:8448
     environment:
       - SSODOMAIN=example.com
       - PORTAL=https://auth.example.com
@@ -50,6 +46,34 @@ services:
       - LOGGER=stderr
       - USERLOGGER=stderr
       - PG_SERVER=synapse-db
+      - REDIS_SERVER=redis:6379
     depends_on: 
       synapse-db:
         condition: service_healthy
+
+  manager:
+    image: yadd/lemonldap-ng-manager
+    environment:
+      - PG_SERVER=db
+      - REDIS_SERVER=redis:6379
+      - LOGGER=stderr
+      - USERLOGGER=stderr
+    depends_on:
+      synapse-db:
+        condition: service_healthy
+      redis:
+        condition: service_started
+
+  haproxy:
+    image: haproxy:2.6-bullseye
+    ports:
+      - 443:443
+    volumes:
+      - ./haproxy:/usr/local/etc/haproxy:ro
+      - ./ssl/both.pem:/etc/ssl/certs/both.pem
+    sysctls:
+      - net.ipv4.ip_unprivileged_port_start=0
+    depends_on:
+      - auth
+      - manager
+      - synapse

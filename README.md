@@ -14,11 +14,14 @@ Before continuing, **choose the branch you need**:
 * `step-0-oidc`: default SQLite database with OIDC configured _(default LLNG accounts)_
 * `step-1-postgresql`: change database to PostgreSQL
 * `step-2-llng-in-db`: use PostgreSQL for both LLNG and Synapse
+* `step-3-haproxy`: use haproxy to manage all https servers
 * `main`: development branch
 
 Then, initialize matrix using [./init.sh](./init.sh) script.
 
 > You should do this at each branch change.
+
+Use the `clean.sh` script to delete local databases.
 
 ## Run
 
