@@ -13,9 +13,13 @@ services:
       - POSTGRES_PASSWORD=synapse!!
     healthcheck:
       test: "exit 0"
+    networks:
+      - db
 
   redis:
     image: redis
+    networks:
+      - sso
 
   synapse:
     image: matrixdotorg/synapse
@@ -35,6 +39,9 @@ services:
         condition: on-failure
         delay: 5s
         window: 120s
+    networks:
+      - db
+      - frontend
 
   auth:
     image: yadd/lemonldap-ng-portal
@@ -57,6 +64,10 @@ services:
       synapse-db:
         condition: service_healthy
     scale: 3
+    networks:
+      - db
+      - frontend
+      - sso
 
   manager:
     image: yadd/lemonldap-ng-manager
@@ -73,6 +84,10 @@ services:
         condition: service_healthy
       redis:
         condition: service_started
+    networks:
+      - db
+      - frontend
+      - sso
 
   haproxy:
     image: haproxy:2.6-bullseye
@@ -89,3 +104,13 @@ services:
       - auth
       - manager
       - synapse
+    networks:
+      - frontend
+
+networks:
+  db:
+    name: db
+  sso:
+    name: sso
+  frontend:
+    name: frontend
