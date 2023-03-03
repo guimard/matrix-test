@@ -47,10 +47,12 @@ services:
     image: yadd/lemonldap-ng-portal
     hostname: auth.example.com
     volumes:
-      - ./lemon/matrix-vhost.conf:/etc/nginx/sites-enabled/matrix.conf
       - ./lemon/ssl.conf:/etc/nginx/sites-enabled/0000default.conf
       - ./fluffychat:/var/www/fluffychat
       - ./lemon/fluffychat.conf:/etc/nginx/sites-enabled/fluffychat.conf
+      - ./lemon/root.conf:/etc/nginx/sites-enabled/root.conf
+      - ./synapse-ref/wellknownserver.conf:/var/www/matrix-server.json
+      - ./synapse-ref/wellknownclient.conf:/var/www/matrix-client.json
       - ./ssl:/etc/nginx/ssl
     environment:
       - SSODOMAIN=example.com
