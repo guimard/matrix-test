@@ -61,9 +61,35 @@ listeners:
   #    - names: [federation]
   #      compress: false
 database:
-  name: sqlite3
+#  name: sqlite3
+#  args:
+#    database: /data/homeserver.db
+  name: psycopg2
   args:
-    database: /data/homeserver.db
+    user: synapse
+    password: "synapse!1"
+    database: synapse
+    host: synapse-db
+    cp_min: 5
+    cp_max: 10
+
+    # seconds of inactivity after which TCP should send a keepalive message to the server
+    keepalives_idle: 10
+    # the number of seconds after which a TCP keepalive message that is not
+    # acknowledged by the server should be retransmitted
+    keepalives_interval: 10
+    # the number of TCP keepalives that can be lost before the client's connection
+    # to the server is considered dead
+    keepalives_count: 3
+
+    # TUNING
+    #
+    #shared_buffers
+    #effective_cache_size
+    #work_mem
+    #maintenance_work_mem
+    #autovacuum_work_mem
+    # https://wiki.postgresql.org/wiki/Tuning_Your_PostgreSQL_Server
 
 # Number of events to cache in memory
 event_cache_size: "10K"

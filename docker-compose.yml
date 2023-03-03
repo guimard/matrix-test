@@ -1,6 +1,17 @@
 version: "3.4"
 
 services:
+
+  synapse-db:
+    image: postgres:13-bullseye
+    volumes:
+      - ./synapse-db:/var/lib/postgresql/data
+      - ./synapse-ref/init-db.sh:/docker-entrypoint-initdb.d/init-db.sh
+    environment:
+      - POSTGRES_PASSWORD=synapse!!
+    healthcheck:
+      test: "exit 0"
+
   synapse:
     image: matrixdotorg/synapse
     container_name: synapse
@@ -37,3 +48,6 @@ services:
       - LOGLEVEL=debug
       - LOGGER=stderr
       - USERLOGGER=stderr
+    depends_on: 
+      synapse-db:
+        condition: service_healthy
