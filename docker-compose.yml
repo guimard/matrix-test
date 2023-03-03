@@ -7,6 +7,8 @@ services:
     volumes:
       - ./synapse-db:/var/lib/postgresql/data
       - ./synapse-ref/init-db.sh:/docker-entrypoint-initdb.d/init-db.sh
+      - ./lemon/init-llng-db.sh:/docker-entrypoint-initdb.d/init-llng-db.sh
+      - ./lemon/lmConf-1.json:/llng-conf/conf.json
     environment:
       - POSTGRES_PASSWORD=synapse!!
     healthcheck:
@@ -29,7 +31,6 @@ services:
     container_name: auth
     hostname: auth.example.com
     volumes:
-      - ./lemon/lmConf-1.json:/var/lib/lemonldap-ng/conf/lmConf-1.json
       - ./lemon/matrix-vhost.conf:/etc/nginx/sites-enabled/matrix.conf
       - ./lemon/ssl.conf:/etc/nginx/sites-enabled/0000default.conf
       - ./fluffychat:/var/www/fluffychat
@@ -48,6 +49,7 @@ services:
       - LOGLEVEL=debug
       - LOGGER=stderr
       - USERLOGGER=stderr
+      - PG_SERVER=synapse-db
     depends_on: 
       synapse-db:
         condition: service_healthy
