@@ -19,7 +19,6 @@ services:
 
   synapse:
     image: matrixdotorg/synapse
-    container_name: synapse
     hostname: matrix.example.com
     volumes:
       - ./synapse-data:/data
@@ -28,10 +27,10 @@ services:
     depends_on: 
       auth:
         condition: service_started
+    scale: 3
 
   auth:
-    image: yadd/lemonldap-ng-dev
-    container_name: auth
+    image: yadd/lemonldap-ng-portal
     hostname: auth.example.com
     volumes:
       - ./lemon/matrix-vhost.conf:/etc/nginx/sites-enabled/matrix.conf
@@ -42,7 +41,7 @@ services:
     environment:
       - SSODOMAIN=example.com
       - PORTAL=https://auth.example.com
-      - LOGLEVEL=debug
+      - LOGLEVEL=notice
       - LOGGER=stderr
       - USERLOGGER=stderr
       - PG_SERVER=synapse-db
@@ -50,12 +49,14 @@ services:
     depends_on: 
       synapse-db:
         condition: service_healthy
+    scale: 3
 
   manager:
     image: yadd/lemonldap-ng-manager
     environment:
       - PG_SERVER=db
       - REDIS_SERVER=redis:6379
+      - LOGLEVEL=notice
       - LOGGER=stderr
       - USERLOGGER=stderr
     depends_on:
@@ -73,6 +74,8 @@ services:
       - ./ssl/both.pem:/etc/ssl/certs/both.pem
     sysctls:
       - net.ipv4.ip_unprivileged_port_start=0
+    environment:
+      - COMPOSE_PROJECT_NAME
     depends_on:
       - auth
       - manager
