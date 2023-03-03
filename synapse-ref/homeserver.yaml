@@ -9,7 +9,9 @@
 # For more information on how to configure Synapse, including a complete accounting of
 # each option, go to docs/usage/configuration/config_documentation.md or
 # https://matrix-org.github.io/synapse/latest/usage/configuration/config_documentation.html
-server_name: "matrix.example.com"
+server_name: "example.com"
+public_baseurl: "https://matrix.example.com/"
+
 pid_file: /data/homeserver.pid
 
 # For test, these lines are dropped:
