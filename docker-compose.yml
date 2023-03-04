@@ -100,8 +100,6 @@ services:
       - ./ssl/both.pem:/etc/ssl/certs/both.pem
     sysctls:
       - net.ipv4.ip_unprivileged_port_start=0
-    environment:
-      - COMPOSE_PROJECT_NAME
     depends_on:
       - auth
       - manager
