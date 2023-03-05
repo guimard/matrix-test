@@ -23,7 +23,6 @@ services:
 
   synapse:
     image: matrixdotorg/synapse
-    hostname: matrix.example.com
     volumes:
       - ./synapse-data:/data
       - ./ssl/ca-cert.pem:/etc/ssl/certs/ca-cert.pem
@@ -34,18 +33,14 @@ services:
     deploy:
       mode: replicated
       replicas: 3
-      endpoint_mode: dnsrr
       restart_policy:
         condition: on-failure
-        delay: 5s
-        window: 120s
     networks:
       - db
       - frontend
 
   auth:
     image: yadd/lemonldap-ng-portal
-    hostname: auth.example.com
     volumes:
       - ./lemon/ssl.conf:/etc/nginx/sites-enabled/0000default.conf
       - ./fluffychat:/var/www/fluffychat
@@ -65,11 +60,17 @@ services:
     depends_on: 
       synapse-db:
         condition: service_healthy
-    scale: 3
+    deploy:
+      mode: replicated
+      replicas: 3
+      restart_policy:
+        condition: on-failure
     networks:
-      - db
-      - frontend
-      - sso
+      db:
+        aliases:
+          - auth.example.com
+      frontend:
+      sso:
 
   manager:
     image: yadd/lemonldap-ng-manager
@@ -105,7 +106,11 @@ services:
       - manager
       - synapse
     networks:
-      - frontend
+      frontend:
+        aliases:
+          - matrix.example.com
+          - auth.example.com
+          - manager.example.com
 
 networks:
   db:
