@@ -39,6 +39,13 @@ services:
       - db
       - frontend
 
+  ident:
+    image: matrixdotorg/sydent
+    volumes:
+      - ./sydent-data:/data
+    networks:
+      frontend:
+
   auth:
     image: yadd/lemonldap-ng-portal
     volumes:
@@ -96,6 +103,8 @@ services:
     image: haproxy:2.6-bullseye
     ports:
       - 443:443
+      - 8448:8448
+      - 8090:8090
     volumes:
       - ./haproxy:/usr/local/etc/haproxy:ro
       - ./ssl/both.pem:/etc/ssl/certs/both.pem
@@ -103,11 +112,13 @@ services:
       - net.ipv4.ip_unprivileged_port_start=0
     depends_on:
       - auth
+      - ident
       - manager
       - synapse
     networks:
       frontend:
         aliases:
+          - ident.example.com
           - matrix.example.com
           - auth.example.com
           - manager.example.com

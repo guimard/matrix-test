@@ -250,7 +250,14 @@ user_directory:
 e2e_key_export: true
 encryption_enabled: true
 
+# IDENTITY SERVER PARAMETERS
+enable_3pid_lookup: true
+
+# OIDC only, changes not allowed in mail/phone
+enable_3pid_changes: false
+# Suggested server
+default_identity_server: https://ident.example.com
+
 # FOR TEST ONLY
 accept_keys_insecurely: true
 federation_verify_certificates: false
-
